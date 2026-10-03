@@ -587,7 +587,7 @@
   /**
    * const w = ET.wet(s, { rates: { ox: 1, si: 0 } });
    * w.apply(t)   시간 t에 깎인 모습으로 s를 바꾼다(처음 상태에서 다시 계산하므로 되감기도 된다).
-   * w.T          셀마다 식각액이 도달한 시간(Float32Array, 못 닿으면 Infinity)
+   * w.T          셀마다 식각액이 도달한 시간(Float64Array, 못 닿으면 Infinity)
    * rates: 재질별 식각 속도(nm/단위시간). 0이면 깎이지 않는다(마스크).
    * 시작점은 처음부터 진공이면서 맨 위와 이어진 셀이다.
    */
@@ -596,7 +596,8 @@
     const mat0 = s.mat.slice(), phi0 = s.phi.slice();
     const rate = new Float32Array(MAT.length);
     MAT.forEach((m, i) => { if (m) rate[i] = (opt.rates && opt.rates[m.key]) || 0; });
-    const T = new Float32Array(N).fill(Infinity);
+    const T = new Float64Array(N).fill(Infinity);
+    const done = new Uint8Array(N);
     // 맨 위와 이어진 진공에서 시작
     const heap = new Heap();
     const seen = new Uint8Array(N);
@@ -623,7 +624,8 @@
     }
     while (heap.size) {
       const [tc, c] = heap.pop();
-      if (tc > T[c]) continue;
+      if (done[c] || tc > T[c]) continue;
+      done[c] = 1;
       const ix = c % W, iy = (c / W) | 0;
       for (const [a, b, d] of ST) {
         let jx = ix + a; const jy = iy + b;
