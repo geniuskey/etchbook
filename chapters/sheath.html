@@ -65,7 +65,7 @@
       <div class="sim-body side">
         <div class="sim-view"><canvas id="fl-cv"></canvas><span class="hint">세로선을 좌우로 끈다</span></div>
         <div class="sim-controls">
-          <label class="ctrl"><span>전자 온도 T<sub>e</sub> <output id="fl-te-out"></output></span><input type="range" id="fl-te" min="1" max="8" step="0.1" value="3"></label>
+          <label class="ctrl"><span>전자 온도 Te <output id="fl-te-out"></output></span><input type="range" id="fl-te" min="1" max="8" step="0.1" value="3"></label>
           <div class="seg" id="fl-m"><button data-value="1">H⁺</button><button data-value="40" class="on">Ar⁺</button><button data-value="69">CF₃⁺</button><button data-value="131">Xe⁺</button></div>
           <div class="btn-row"><button class="btn primary" id="fl-go">벽을 놓아 준다</button></div>
         </div>
@@ -145,7 +145,7 @@
       <div class="sim-body side">
         <div class="sim-view"><canvas id="ch-cv"></canvas></div>
         <div class="sim-controls">
-          <label class="ctrl"><span>시스 전압 V<sub>s</sub> <output id="ch-v-out"></output></span><input type="range" id="ch-v" min="10" max="1000" step="5" value="300"></label>
+          <label class="ctrl"><span>시스 전압 Vs <output id="ch-v-out"></output></span><input type="range" id="ch-v" min="10" max="1000" step="5" value="300"></label>
           <label class="ctrl"><span>플라스마 밀도 n <output id="ch-n-out"></output></span><input type="range" id="ch-n" min="15" max="17.5" step="0.05" value="16"></label>
           <label class="ctrl"><span>압력 <output id="ch-p-out"></output></span><input type="range" id="ch-p" min="1" max="200" step="1" value="30"></label>
           <div class="legend" style="padding:0"><span><i class="sq" style="background:var(--accent)"></i>전위</span><span><i class="sq" style="background:var(--accent-2)"></i>전자 밀도</span><span><i class="sq" style="background:var(--warn)"></i>이온 밀도</span></div>
@@ -158,7 +158,7 @@
         <div class="stat"><span class="k">이온 평균 자유 행로</span><span class="v" id="ch-o-mfp">—</span></div>
         <div class="stat"><span class="k">시스 안 충돌 수</span><span class="v s" id="ch-o-col">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① 밀도 10¹⁶ m⁻³, 300 V에서 시스는 약 4 mm다. ② 밀도를 10¹⁷로 올리면(고밀도 플라스마) 1.3 mm로 얇아진다. ③ 압력을 100 mTorr 넘게 올리면 이온이 시스 안에서 여러 번 부딪힌다. 이 충돌이 이온의 에너지를 깎고 방향을 흩는다(뒤의 이온 각도 분포). ④ 전압을 10 V로 내리면 시스가 데바이 길이 몇 배로 줄어든다. (모델: T<sub>e</sub> = 3 eV, Ar⁺, 직류 무충돌 차일드 시스. 평균 자유 행로는 λ ≈ 1/(330·p[Torr]) cm.)</div>
+      <div class="sim-note">해볼 것: ① 밀도 10¹⁶ m⁻³, 300 V에서 시스는 약 4 mm다. ② 밀도를 10¹⁷로 올리면(고밀도 플라스마) 1.3 mm로 얇아진다. ③ 압력을 3 mTorr로 내리면 시스 안 충돌이 1회 아래로 줄고, 100 mTorr 넘게 올리면 여러 번 부딪힌다. 이 충돌이 이온의 에너지를 깎고 방향을 흩는다(뒤의 이온 각도 분포). ④ 전압을 10 V로 내리면 시스가 데바이 길이 몇 배로 줄어든다. (모델: T<sub>e</sub> = 3 eV, Ar⁺, 직류 무충돌 차일드 시스. 평균 자유 행로는 λ ≈ 1/(330·p[Torr]) cm.)</div>
     </div>
 
     <p>숫자를 트렌치와 견줘 본다. 시스는 수 mm, EB-20의 트렌치 폭은 20 nm다. 비는 10만 배를 넘는다. 시스 입장에서 보면 웨이퍼 위의 트렌치는 거울처럼 매끈한 평면에 난 흠집에도 못 미친다. 그래서 시스의 경계면은 무늬를 전혀 따라가지 않고 웨이퍼 전체에 평평하게 놓인다. <strong>전기장은 웨이퍼 면에 수직이고, 이온은 모든 트렌치에 똑같이 수직으로 들어온다.</strong> 이것이 플라스마 식각이 이방성일 수 있는 첫 번째 이유다.</p>
@@ -209,8 +209,8 @@
       <div class="sim-body side">
         <div class="sim-view"><canvas id="sb-cv"></canvas></div>
         <div class="sim-controls">
-          <label class="ctrl"><span>면적비 A<sub>접지</sub> / A<sub>전극</sub> <output id="sb-a-out"></output></span><input type="range" id="sb-a" min="1" max="8" step="0.1" value="3"></label>
-          <label class="ctrl"><span>RF 진폭 V<sub>rf</sub> <output id="sb-v-out"></output></span><input type="range" id="sb-v" min="50" max="1000" step="10" value="500"></label>
+          <label class="ctrl"><span>면적비 A접지 / A전극 <output id="sb-a-out"></output></span><input type="range" id="sb-a" min="1" max="8" step="0.1" value="3"></label>
+          <label class="ctrl"><span>RF 진폭 Vrf <output id="sb-v-out"></output></span><input type="range" id="sb-v" min="50" max="1000" step="10" value="500"></label>
           <label class="check"><input type="checkbox" id="sb-c" checked> 블로킹 커패시터 연결</label>
           <div class="legend" style="padding:0"><span><i class="sq" style="background:var(--accent)"></i>전극 V(t)</span><span><i class="sq" style="background:var(--accent-2)"></i>플라스마 V<sub>p</sub>(t)</span></div>
         </div>
@@ -251,7 +251,7 @@
         <div class="stat"><span class="k">τ<sub>i</sub> / τ<sub>rf</sub></span><span class="v" id="ie-o-r">—</span></div>
         <div class="stat"><span class="k">에너지 폭 ΔE (양 봉우리 사이)</span><span class="v" id="ie-o-de">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① Ar⁺, 2 MHz에서는 폭이 수백 eV에 이르는 쌍봉 분포가 나온다. ② 60 MHz로 올리면 봉우리 둘이 가운데로 모인다. ③ 같은 13.56 MHz에서 He⁺로 바꾸면 가벼워 빨리 건너므로 다시 넓어진다. CF₃⁺는 더 좁다. 플라스마 속 여러 이온이 같은 전압에서 서로 다른 분포를 갖는다. (모델: 시스 전압 V̄(1 − 0.95 sin ωt), 시스 두께는 평균 전압의 차일드 두께로 고정(n = 5×10¹⁶ m⁻³, T<sub>e</sub> = 3 eV), 무충돌, 이온 3,000개.)</div>
+      <div class="sim-note">해볼 것: ① Ar⁺, 2 MHz에서는 폭이 수백 eV에 이르는 쌍봉 분포가 나온다. ② 60 MHz로 올리면 봉우리 둘이 가운데로 모인다. ③ 같은 13.56 MHz에서 He⁺로 바꾸면 가벼워 빨리 건너므로 다시 넓어진다. CF₃⁺는 더 좁다. 플라스마 속 여러 이온이 같은 전압에서 서로 다른 분포를 갖는다. (모델: 시스 전압 V̄(1 − 0.95 sin ωt), 시스 두께는 평균 전압의 차일드 두께로 고정(n = 5×10¹⁶ m⁻³, T<sub>e</sub> = 3 eV), 무충돌, 이온 6,000개.)</div>
     </div>
 
     <p>여기서 공정 엔지니어의 손잡이 하나가 나온다. 바이어스 주파수다. 낮은 주파수(2 MHz 안팎)는 같은 전력으로 높은 시스 전압을 만들고 에너지 분포가 넓다. 고에너지 꼬리는 깊은 구멍 바닥까지 이온을 밀어 넣는 데 좋지만 마스크와 정지막도 더 깎는다. 높은 주파수(수십 MHz)는 분포가 좁아 에너지를 정밀하게 맞출 수 있지만 같은 전력에서 전압이 낮다. 최근에는 사인파 대신 펄스 모양 전압을 걸어 분포를 한 봉우리로 좁히는 방식(맞춤 파형 바이어스)도 쓴다.</p>
@@ -278,18 +278,19 @@
       <div class="sim-body side">
         <div class="sim-view"><canvas id="ia-cv"></canvas></div>
         <div class="sim-controls">
-          <label class="ctrl"><span>압력 <output id="ia-p-out"></output></span><input type="range" id="ia-p" min="1" max="150" step="1" value="10"></label>
-          <label class="ctrl"><span>이온 온도 T<sub>i</sub> <output id="ia-t-out"></output></span><input type="range" id="ia-t" min="0.03" max="1" step="0.01" value="0.5"></label>
+          <label class="ctrl"><span>압력 <output id="ia-p-out"></output></span><input type="range" id="ia-p" min="1" max="150" step="1" value="3"></label>
+          <label class="ctrl"><span>이온 온도 Ti <output id="ia-t-out"></output></span><input type="range" id="ia-t" min="0.03" max="1" step="0.01" value="0.5"></label>
           <label class="ctrl"><span>시스 전압 <output id="ia-v-out"></output></span><input type="range" id="ia-v" min="30" max="1000" step="10" value="300"></label>
         </div>
       </div>
       <div class="sim-readout">
         <div class="stat"><span class="k">각도 퍼짐 σ<sub>θ</sub> (rms)</span><span class="v" id="ia-o-s">—</span></div>
         <div class="stat"><span class="k">무충돌 식 √(T<sub>i</sub>/2eV)</span><span class="v" id="ia-o-s0">—</span></div>
+        <div class="stat"><span class="k">5°보다 비스듬한 이온</span><span class="v" id="ia-o-w">—</span></div>
         <div class="stat"><span class="k">한 번도 안 부딪힌 이온</span><span class="v" id="ia-o-f">—</span></div>
         <div class="stat"><span class="k">평균 에너지 / eV<sub>s</sub></span><span class="v" id="ia-o-e">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① 1 mTorr에서는 거의 모든 이온이 무충돌로 도착하고 σ가 식과 맞는다. ② 압력을 50 mTorr 넘게 올리면 시스 안 충돌이 늘어 낮은 에너지·넓은 각도의 이온이 생긴다. 분포 가운데는 그대로 좁고 꼬리가 넓어진다. ③ 전압을 내리면 시스가 얇아져 충돌은 줄지만 같은 가로 속도에 대해 각도가 커진다. (모델: Ar⁺, 직류 차일드 시스(n = 5×10¹⁶ m⁻³, T<sub>e</sub> = 3 eV), 충돌의 60%는 전하 교환(정지한 새 이온), 40%는 탄성 산란(0~45° 무작위 꺾임과 에너지 일부 잃음). 2차원.)</div>
+      <div class="sim-note">해볼 것: ① 1~3 mTorr에서는 대부분의 이온이 무충돌로 도착하고 분포가 점선(무충돌 식의 가우시안)과 겹친다. ② 압력을 10 mTorr, 50 mTorr로 올리면 시스 안 충돌이 늘어 낮은 에너지·넓은 각도의 이온이 생긴다. 분포 가운데는 점선을 따라 좁게 남고 꼬리만 넓어져, rms 퍼짐은 몇 도로 커진다. ③ 전압을 내리면 시스가 얇아져 충돌은 줄지만 같은 가로 속도에 대해 각도가 커진다. (모델: Ar⁺, 직류 차일드 시스(n = 5×10¹⁶ m⁻³, T<sub>e</sub> = 3 eV), 충돌의 60%는 전하 교환(정지한 새 이온), 40%는 탄성 산란(0~45° 무작위 꺾임과 에너지 일부 잃음). 2차원.)</div>
     </div>
 
     <p>정리하면 무충돌 시스에서 각도 퍼짐은 1~2°, 충돌이 있는 수십 mTorr 시스에서는 꼬리를 포함해 몇 도다. 식각 공정에서 압력을 낮게 유지하려는 이유가 이것이다. 압력이 낮으면 이온이 덜 부딪혀 더 곧게 오고, 에너지도 덜 잃는다. 대신 압력이 낮으면 라디칼이 적어 식각이 느려진다. 이 절충은 <a href="reactors.html">5장</a>에서 다시 만난다. EB-20의 기본 레시피는 이 모든 효과를 뭉뚱그려 이온 각도 퍼짐을 \(\sigma = 3^\circ\)인 가우시안으로 둔다.</p>
@@ -505,7 +506,7 @@
       txt(ctx, "5 λD", x0 + dl / 2, c1.Y(-V) - 2, P.dim, "center", "bottom", 11, true);
       EB.stat("ch-o-ld", fmtLen(lD));
       EB.stat("ch-o-s", fmtLen(s) + " (" + (s / lD).toFixed(0) + " λ<sub>D</sub>)");
-      EB.stat("ch-o-r", EB.fmt(s / 20e-9, 2) + "배");
+      EB.stat("ch-o-r", "약 " + EB.fmt(s / 20e-9 / 1e4, 2) + "만 배");
       EB.stat("ch-o-mfp", fmtLen(lam));
       EB.stat("ch-o-col", ncol < 0.3 ? sp(ncol.toFixed(2) + "회 · 거의 무충돌", "ok-t") : ncol < 2 ? sp(ncol.toFixed(1) + "회 · 약한 충돌", "warn-t") : sp(ncol.toFixed(1) + "회 · 충돌 시스", "bad-t"));
     }, { aspect: 0.75, minHeight: 340, maxHeight: 460 });
@@ -559,7 +560,7 @@
       const ub = Math.sqrt((2 * Q * V) / M), ti = (3 * s) / ub, trf = 1 / f;
       const rnd = EB.rng(4), E = [];
       const nst = 260, dt = (ti * 1.6) / nst;
-      for (let p = 0; p < 3000; p++) {
+      for (let p = 0; p < 6000; p++) {
         let x = 0, v = uB, t = rnd() * trf, k = 0;
         while (x < s && k < nst * 6) {
           const Vt = V * (1 - 0.95 * Math.sin(w * t));
@@ -577,7 +578,7 @@
     const cv = EB.canvas("#ie-cv", (ctx, w, h) => {
       const P = EB.palette();
       if (!res) return;
-      const hi = 2.1 * res.V, nb = 70, hgm = hist(res.E, 0, hi, nb);
+      const hi = 2.1 * res.V, nb = 56, hgm = hist(res.E, 0, hi, nb);
       let mx = 0; hgm.forEach((v) => (mx = Math.max(mx, v)));
       const bx = { x: 58, y: 18, w: w - 58 - 16, h: h - 18 - 48 };
       const c = EB.chart(ctx, bx, { x: [0, hi], y: [0, 1.1], xLabel: "이온 에너지 (eV)", yLabel: "상대 빈도", yFmt: (v) => v.toFixed(1), vlines: [{ x: res.V, color: P.faint, label: "eV̄" }] });
@@ -654,7 +655,7 @@
       for (let i = 0; i < nb; i++) { const x0 = c1.X(-AM + (i * 2 * AM) / nb), x1 = c1.X(-AM + ((i + 1) * 2 * AM) / nb), y = c1.Y(ha[i] / m1); ctx.fillRect(x0, y, Math.max(1, x1 - x0 - 0.5), c1.Y(0) - y); }
       ctx.globalAlpha = 1;
       // 같은 σ의 가우시안 겹쳐 그리기
-      const gs = []; for (let i = 0; i <= 120; i++) { const a = -AM + (2 * AM * i) / 120; gs.push([a, Math.exp(-(a * a) / (2 * res.sig * res.sig))]); }
+      const s0 = Math.sqrt(Ti() / (2 * Vs())) / DEG, gs = []; for (let i = 0; i <= 160; i++) { const a = -AM + (2 * AM * i) / 160; gs.push([a, Math.exp(-(a * a) / (2 * s0 * s0)) * (2 * AM / nb) / (Math.sqrt(2 * Math.PI) * s0) * res.A.length * res.free / m1]); }
       ctx.strokeStyle = P.dim; ctx.setLineDash([4, 3]); ctx.lineWidth = 1.2; ctx.beginPath(); gs.forEach(([a, v], i) => (i ? ctx.lineTo(c1.X(a), c1.Y(v)) : ctx.moveTo(c1.X(a), c1.Y(v)))); ctx.stroke(); ctx.setLineDash([]);
       txt(ctx, "각도 분포", b1.x + 4, b1.y - 6, P.dim, "left", "bottom", 12);
       const he = hist(res.E, 0, res.V * 1.05, 50); let m2 = 0; he.forEach((v) => (m2 = Math.max(m2, v)));
@@ -667,6 +668,7 @@
       EB.stat("ia-o-s", res.sig.toFixed(2) + "<small>°</small>");
       EB.stat("ia-o-s0", (Math.sqrt(Ti() / (2 * Vs())) / DEG).toFixed(2) + "<small>°</small>");
       EB.stat("ia-o-f", (res.free * 100).toFixed(0) + "<small>%</small>");
+      EB.stat("ia-o-w", (res.A.filter((a) => Math.abs(a) > 5).length / res.A.length * 100).toFixed(1) + "<small>%</small>");
       EB.stat("ia-o-e", (em / res.E.length / res.V).toFixed(2));
     }, { get height() { return null; }, aspect: 0.62, minHeight: 300, maxHeight: 440 });
     run();
