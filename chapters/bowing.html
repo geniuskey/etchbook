@@ -222,7 +222,7 @@
         <div class="stat"><span class="k">바닥 어긋남 최대</span><span class="v" id="tw-o-mx">—</span></div>
         <div class="stat"><span class="k">바닥 어긋남 산포 (1σ)</span><span class="v" id="tw-o-sd">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① 산포 1.5°로 돌린다. 기울기가 큰 트렌치일수록 바닥 가운데가 입구 가운데에서 몇 nm씩 밀려난다. 기울기 ±3°면 약 ±8 nm다. 폭 20 nm 트렌치에서 바닥이 반 폭 가까이 옮겨 간 셈이다. ② 산포를 0으로 하면 다섯이 모두 곧다. ③ 산포를 3°로 올린다. 크게 기운 트렌치는 깊이도 얕다. 한쪽 측벽에 걸려 바닥까지 가는 이온이 줄기 때문이다. (모델: <code>ET.sim</code>, EB-20 단면을 2 nm 셀로 다섯 번. 기본 레시피에 ion.tilt만 바꿨다. 시간 300까지. 바닥 위치는 가장 깊은 열 폭의 가운데.)</div>
+      <div class="sim-note">해볼 것: ① 산포 1.5°로 돌린다. 기울기가 큰 트렌치일수록 바닥 가운데가 입구 가운데에서 몇 nm씩 밀려난다. 기울기 ±3°면 약 ±5~6 nm다. 폭 20 nm 트렌치에서 바닥이 반 폭 가까이 옮겨 간 셈이다. ② 산포를 0으로 하면 다섯이 모두 곧다. ③ 산포를 3°로 올린다. 어긋남이 커지고, 이온이 향하는 쪽 측벽이 더 깎여 단면 전체가 비스듬해진다. (모델: <code>ET.sim</code>, EB-20 단면을 2 nm 셀로 다섯 번. 기본 레시피에 ion.tilt만 바꿨다. 시간 300까지. 바닥 위치는 가장 깊은 열 폭의 가운데.)</div>
     </div>
 
     <p>트위스팅은 깊이에 비례해 커진다. 기울기 \(\delta\)가 같아도 깊이 \(D\)에서의 어긋남은 대략 \(D\tan\delta\)다. EB-20(깊이 160 nm)에서 1°는 3 nm지만, 깊이 6 µm의 채널 홀에서 0.1°만 기울어도 10 nm다. 그래서 고종횡비 식각(<a href="har.html">16장</a>)에서는 웨이퍼 가장자리의 시스 기울기를 포커스 링 높이로 맞추고, 마스크 구멍의 모양과 배열을 대칭으로 다듬는 일이 중요하다.</p>
@@ -338,7 +338,7 @@
   const sp = (t, c) => '<span class="' + c + '">' + t + "</span>";
   const NM = "<small>nm</small>";
   const DEG = Math.PI / 180;
-  const E = ET.EB20, SPEC_BOW = 3;
+  const E = ET.EB20, SPEC_BOW = E.spec.bow || 3;
 
   /* ---------------------------------------------------------- 공통 도우미 */
   function txt(ctx, s, x, y, color, align, base, px, mono) {
@@ -360,14 +360,6 @@
     ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = 1.4; ctx.beginPath();
     ctx.moveTo(x0, y); ctx.lineTo(x1, y); ctx.moveTo(x0, y - 4); ctx.lineTo(x0, y + 4); ctx.moveTo(x1, y - 4); ctx.lineTo(x1, y + 4); ctx.stroke(); ctx.restore();
   }
-  const TK = (function () {
-    try {
-      const mk = (dx) => { const s = ET.sim({ width: 16, height: 48, dx, seed: 1 }); s.layer("ox", 40); const y = ET.surfaceY(s, 8); s.run(8); return ET.surfaceY(s, 8) - y; };
-      const a = mk(1), b = mk(2);
-      return b > 0 && a / b > 1.5;
-    } catch (e) { return false; }
-  })();
-  const tk = (dx) => (TK ? dx : 1);
   function goLabel(btn, running, done) { btn.textContent = running ? "일시정지" : done ? "다시 돌리기" : "식각 시작"; }
   function gaussR(r) { let u = 0; while (u === 0) u = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * r()); }
   const reflectP = (aDeg, refl) => refl * (aDeg < 65 ? 0 : aDeg > 86 ? 1 : (aDeg - 65) / 21);
@@ -611,7 +603,7 @@
 
   /* ---------------------------------------------------------- 5. 트위스팅 */
   (function () {
-    const NH = 5, DX = 2, K = tk(DX), TEND = 300;
+    const NH = 5, DX = 2, TEND = 300;
     const S = EB.range("tw-s", (v) => v.toFixed(1) + "°", () => { roll(); });
     let sims = [], tilts = [], seed = 3, raf = 0, running = false, done = false;
     function roll() {
@@ -631,9 +623,9 @@
       const t0 = performance.now(); let k = 0;
       while (performance.now() - t0 < 14) {
         const s = sims.reduce((a, b) => (b.t < a.t ? b : a));
-        if (s.t >= TEND * K - 1e-9) { running = false; done = true; $("tw-go").textContent = "다시 돌리기"; break; }
-        const nx = (Math.floor(s.t / (20 * K)) + 1) * 20 * K;
-        s.step((Math.min(TEND * K, nx) - s.t) / (s.dx * ET.R0));
+        if (s.t >= TEND - 1e-9) { running = false; done = true; $("tw-go").textContent = "다시 돌리기"; break; }
+        const nx = (Math.floor(s.t / 20) + 1) * 20;
+        s.step((Math.min(TEND, nx) - s.t) / (s.dx * ET.R0));
         if (s.t >= nx - 1e-9) s.snap();
         k++;
       }
@@ -661,7 +653,7 @@
         }
         txt(ctx, (tilts[i] > 0 ? "+" : "") + tilts[i].toFixed(1) + "°", box.x + box.w / 2, 12, P.dim, "center", "middle", 11, true);
       });
-      const t = sims.length ? Math.min(...sims.map((s) => s.t)) / K : 0;
+      const t = sims.length ? Math.min(...sims.map((s) => s.t)) : 0;
       EB.stat("tw-o-t", f0(t));
       EB.stat("tw-o-tl", tilts.map((q) => (q > 0 ? "+" : "") + q.toFixed(1)).join(" "));
       const mx = offs.reduce((a, b) => Math.max(a, Math.abs(b)), 0);

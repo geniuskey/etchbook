@@ -5,6 +5,30 @@
 <html lang="ko">
 <head>
 <!--head:start {"desc": "수직, 테이퍼, 언더컷, 역테이퍼, 보잉. 측벽 각을 어디서 어떻게 재는지, 고분자 증착과 식각의 균형이 각도를 정하는 원리, 라디칼의 자발 식각과 마스크 모양이 프로파일을 바꾸는 모습을 EB-20으로 깎아 본다.", "libs": ["et"]}-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>프로파일과 측벽 각도 · EtchBook</title>
+<meta name="description" content="수직, 테이퍼, 언더컷, 역테이퍼, 보잉. 측벽 각을 어디서 어떻게 재는지, 고분자 증착과 식각의 균형이 각도를 정하는 원리, 라디칼의 자발 식각과 마스크 모양이 프로파일을 바꾸는 모습을 EB-20으로 깎아 본다.">
+<link rel="canonical" href="https://etchbook.euiyun.com/chapters/profile.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta name="theme-color" content="#c2255c">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="EtchBook">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:title" content="프로파일과 측벽 각도 · EtchBook">
+<meta property="og:description" content="수직, 테이퍼, 언더컷, 역테이퍼, 보잉. 측벽 각을 어디서 어떻게 재는지, 고분자 증착과 식각의 균형이 각도를 정하는 원리, 라디칼의 자발 식각과 마스크 모양이 프로파일을 바꾸는 모습을 EB-20으로 깎아 본다.">
+<meta property="og:url" content="https://etchbook.euiyun.com/chapters/profile.html">
+<meta property="og:image" content="https://etchbook.euiyun.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":["Chapter","LearningResource"],"@id":"https://etchbook.euiyun.com/chapters/profile.html#chapter","name":"프로파일과 측벽 각도","headline":"프로파일과 측벽 각도 · EtchBook","description":"수직, 테이퍼, 언더컷, 역테이퍼, 보잉. 측벽 각을 어디서 어떻게 재는지, 고분자 증착과 식각의 균형이 각도를 정하는 원리, 라디칼의 자발 식각과 마스크 모양이 프로파일을 바꾸는 모습을 EB-20으로 깎아 본다.","url":"https://etchbook.euiyun.com/chapters/profile.html","position":9,"inLanguage":"ko","isAccessibleForFree":true,"learningResourceType":"인터랙티브 교재","educationalLevel":"공대 학부","image":"https://etchbook.euiyun.com/og.png","dateModified":"2026-10-03","isPartOf":{"@type":"Book","@id":"https://etchbook.euiyun.com/#book","name":"EtchBook · 반도체 식각 교과서","url":"https://etchbook.euiyun.com/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"EtchBook","item":"https://etchbook.euiyun.com/"},{"@type":"ListItem","position":2,"name":"9. 프로파일과 측벽 각도","item":"https://etchbook.euiyun.com/chapters/profile.html"}]}]}</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../css/style.css">
+<script src="../js/common.js"></script>
+<script src="../js/etch.js"></script>
 <!--head:end-->
 <style>
   .legend i.sq { width: 11px; height: 11px; border-radius: 2px; }
@@ -35,7 +59,7 @@
         <g transform="translate(0,0)">
           <rect class="m-ox" x="30" y="40" width="180" height="80"/><rect class="m-ac" x="30" y="22" width="180" height="18"/>
           <path class="f-surface" d="M100 22H140V108H100Z"/>
-          <text class="lbl-b" x="120" y="138" text-anchor="middle">수직</text><text class="lbl-dim" x="120" y="132" text-anchor="middle" dy="0" visibility="hidden">.</text>
+          <text class="lbl-b" x="120" y="138" text-anchor="middle">수직</text>
         </g>
         <g transform="translate(240,0)">
           <rect class="m-ox" x="30" y="40" width="180" height="80"/><rect class="m-ac" x="30" y="22" width="180" height="18"/>
@@ -335,7 +359,7 @@
   }
   const E = ET.EB20, CD0 = 20;
   // 기본 레시피, 시간 300의 CD 프로파일(엔진으로 미리 잰 값을 깊이 10 nm 간격으로 줄인 것)
-  const BASE = [[1, 24], [10, 22], [20, 22], [30, 22], [40, 22], [50, 22], [60, 22], [70, 22], [80, 22], [90, 22], [100, 22], [110, 22], [120, 21], [130, 21], [140, 21], [150, 20], [158, 18]];
+  const BASE = [[1, 24], [10, 22], [20, 22], [30, 22], [40, 22], [50, 22], [60, 22], [70, 22], [80, 22], [90, 22], [100, 22], [110, 22], [120, 21], [130, 21], [140, 21], [150, 21], [159, 13]];
   /* CD 프로파일 그래프: profs = [{w:[{d,w}], color, width}] */
   function cdChart(ctx, box, profs, P, bias) {
     const xr = bias ? [-15, 45] : [0, 70];

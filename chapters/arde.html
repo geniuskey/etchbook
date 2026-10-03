@@ -73,7 +73,7 @@
         <div class="stat"><span class="k">10 nm ÷ 80 nm</span><span class="v" id="ad-o-r">—</span></div>
         <div class="stat"><span class="k">상태</span><span class="v s" id="ad-o-st">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① 시간 100쯤에서 멈추고 네 바닥의 높이를 견준다. 넓은 트렌치는 평면 속도에 가깝게 파이지만 10 nm는 절반 남짓이다. ② 끝까지 돌린다. 80 nm와 40 nm는 시간 200 무렵 정지막에 닿아 멈추고, 20 nm는 300 무렵에 닿으며, 10 nm는 시간 300에도 산화막 중간에 있다. ③ 라디칼 유량을 4×로 올려 다시 돌린다. 모두 빨라지고 좁은 쪽이 조금 덜 뒤처진다. 0.5×에서는 반대다. (모델: <code>ET.sim</code> 입자 시뮬레이터, 기본 산화막 레시피. 화면이 멈추지 않도록 셀을 2 nm로 키웠으므로 1 nm 셀로 하나씩 돌린 타깃 파일의 값과 몇 nm 다르다. 시간 단위는 열린 평면의 산화막이 1 nm 깎이는 시간이다.)</div>
+      <div class="sim-note">해볼 것: ① 시간 100쯤에서 멈추고 네 바닥의 높이를 견준다. 넓은 트렌치는 평면 속도에 가깝게 파이지만 10 nm는 절반 남짓이다. ② 끝까지 돌린다. 80 nm는 시간 200 무렵, 40 nm는 그보다 조금 뒤에 정지막에 닿아 멈추고, 20 nm는 300 무렵에 닿으며, 10 nm는 시간 300에도 깊이 100 nm 남짓, 산화막 중간에 있다. ③ 라디칼 유량을 4×로 올려 다시 돌린다. 모두 빨라지고 좁은 쪽이 조금 덜 뒤처진다. 대신 넓은 트렌치는 질화막 정지막까지 파고든다. 라디칼이 넘치면 고분자가 정지막을 지키지 못해 선택비가 무너진다(<a href="selectivity.html">8장</a>). 0.5×에서는 모두 느려지고 더 벌어진다. (모델: <code>ET.sim</code> 입자 시뮬레이터, 기본 산화막 레시피. 화면이 멈추지 않도록 셀을 2 nm로 키웠으므로 1 nm 셀로 하나씩 돌린 타깃 파일의 값과 몇 nm 다르다. 시간 단위는 열린 평면의 산화막이 1 nm 깎이는 시간이다.)</div>
     </div>
 
     <p>이것이 <span class="term">종횡비 의존 식각</span><span class="en">(ARDE, Aspect-ratio dependent etching)</span>이다. 깊이를 폭으로 나눈 값, 곧 <span class="term">종횡비</span><span class="en">(Aspect ratio)</span>가 클수록 식각 속도가 떨어진다. 식각 속도가 처음부터 다른 것이 아니라는 점에 주목한다. 그래프의 네 곡선은 시작 기울기가 거의 같다. 트렌치가 깊어져 종횡비가 커지면서 좁은 쪽부터 기울기가 꺾인다. 폭 10 nm는 깊이 50 nm에서 이미 종횡비 5(마스크까지 치면 11)이고, 폭 80 nm는 바닥에 닿을 때도 종횡비 2에 불과하다.</p>
@@ -366,16 +366,6 @@
   }
   function erf(x) { return EB.erf(x); }
   const Phi = (t, sd) => 0.5 * (1 + erf(t / (sd * Math.SQRT2)));
-  /* 셀 크기 dx에서 엔진 시간이 실제 시간과 다르게 흐르는지 확인한다(셀 2 nm면 같은 시간에 절반만 깎이는 엔진 판이 있다).
-     실제 시간 T를 돌리려면 엔진 시간 T × tk(dx)를 돌리고, 화면에는 s.t / tk(dx)를 쓴다. */
-  const TK = (function () {
-    try {
-      const mk = (dx) => { const s = ET.sim({ width: 16, height: 48, dx, seed: 1 }); s.layer("ox", 40); const y = ET.surfaceY(s, 8); s.run(8); return ET.surfaceY(s, 8) - y; };
-      const a = mk(1), b = mk(2);
-      return b > 0 && a / b > 1.5;
-    } catch (e) { return false; }
-  })();
-  const tk = (dx) => (TK ? dx : 1);
   function goLabel(btn, running, done) { btn.textContent = running ? "일시정지" : done ? "다시 돌리기" : "식각 시작"; }
 
   /* 2차원 슬롯의 투과 확률 K(A): 벽은 코사인 재방출, 바닥에서 흡수 */
@@ -437,7 +427,6 @@
   /* ---------------------------------------------------------- 1. 네 트렌치 경주 */
   (function () {
     const CDS = [10, 20, 40, 80], WALL = 20, DX = 2, TEND = 300, E = ET.EB20;
-    const K = tk(DX);
     const COL = (P) => [P.bad, P.accent, P.accent2, P.ok];
     let s, ctl = null, centers = [], hist = [], done = false;
     const neu = EB.seg("ad-neu", () => reset());
@@ -472,7 +461,7 @@
       const series = CDS.map((c, i) => ({ data: hist.map((q) => [q[0], q[i + 1]]), color: C[i], width: 2 }));
       EB.chart(ctx, chBox, { x: [0, TEND], y: [0, 170], xLabel: "시간", yLabel: "깊이 (nm)", series, hlines: [{ y: 160, color: P.faint }] });
       txt(ctx, "정지막", chBox.x + 4, chBox.y + chBox.h - (160 / 170) * chBox.h - 3, P.dim, "left", "bottom", 10);
-      const t = s.t / K;
+      const t = s.t;
       CDS.forEach((c, i) => { const L = hist.length ? hist[hist.length - 1] : null; if (L) txt(ctx, c + " nm", Math.min(chBox.x + chBox.w - 2, chBox.x + (L[0] / TEND) * chBox.w + 4), chBox.y + chBox.h - (L[i + 1] / 170) * chBox.h - 3, C[i], "left", "bottom", 10, true); });
       EB.stat("ad-o-t", f0(t));
       EB.stat("ad-o-a", f0(d[0]) + " / " + f0(d[1]) + NM);
@@ -485,12 +474,12 @@
     $("ad-go").addEventListener("click", () => {
       if (ctl && ctl.running) { ctl.stop(); ctl = null; goLabel($("ad-go"), false, false); return; }
       if (done) { reset(); }
-      const left = TEND * K - s.t; if (left <= 0) return;
+      const left = TEND - s.t; if (left <= 0) return;
       goLabel($("ad-go"), true);
       ctl = ET.runAsync(s, left, {
-        budget: 14, snapEvery: 20 * K,
-        onFrame() { const d = depths(); const t = s.t / K; if (!hist.length || t - hist[hist.length - 1][0] > 2) hist.push([t].concat(d)); cv.redraw(); },
-        onDone() { done = true; ctl = null; hist.push([s.t / K].concat(depths())); goLabel($("ad-go"), false, true); cv.redraw(); },
+        budget: 14, snapEvery: 20,
+        onFrame() { const d = depths(); const t = s.t; if (!hist.length || t - hist[hist.length - 1][0] > 2) hist.push([t].concat(d)); cv.redraw(); },
+        onDone() { done = true; ctl = null; hist.push([s.t].concat(depths())); goLabel($("ad-go"), false, true); cv.redraw(); },
       });
     });
     $("ad-re").addEventListener("click", reset);
