@@ -230,7 +230,7 @@
         <div class="stat"><span class="k">측벽 각</span><span class="v" id="uc-o-a">—</span></div>
         <div class="stat"><span class="k">상태</span><span class="v s" id="uc-o-st">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① 처음 값 0.02로 깎는다. 마스크 바로 아래가 한쪽 6 nm쯤 파여 윗 CD 약 32 nm, 측벽 각 약 87°다. 위가 넓고 아래가 좁은, 테이퍼와 반대 원인의 기울기다. ② 0.01로 낮춘다. 윗 CD 약 28 nm, 측벽 각 약 88.6°로 규격 경계다. ③ 0.04로 올린다. 입구 근처가 한쪽 30 nm 가까이 파여 피치 40 nm의 벽이 위에서부터 사라진다. (모델: <code>ET.EB20.recipe({ mat: { ox: { ch } } })</code>, 시간 300. 고분자 전구체는 기본값 그대로다.)</div>
+      <div class="sim-note">해볼 것: ① 처음 값 0.02로 깎는다. 마스크 바로 아래가 한쪽 6~8 nm 파여 윗 CD 약 32 nm, 측벽 각 약 87°다. 위가 넓고 아래가 좁은, 테이퍼와 반대 원인의 기울기다. ② 0.01로 낮춘다. 윗 CD 약 28 nm, 측벽 각 약 88.6°로 규격 경계다. ③ 0.04로 올린다. 입구 근처가 한쪽 30 nm 가까이 파여 피치 40 nm의 벽이 위에서부터 사라진다. (모델: <code>ET.EB20.recipe({ mat: { ox: { ch } } })</code>, 시간 300. 고분자 전구체는 기본값 그대로다.)</div>
     </div>
 
     <p>여기서 측벽 각 87°는 앞 절의 테이퍼 87°와 숫자는 같지만 전혀 다른 단면이다. 테이퍼는 바닥이 좁아졌고 윗 CD는 마스크와 같다. 언더컷 쪽은 바닥 CD는 마스크와 같고 윗 CD가 넓어졌다. 둘을 가르는 것은 <strong>CD 바이어스</strong>다. 테이퍼는 윗 CD 바이어스가 0이고 바닥 CD 바이어스가 음수, 언더컷은 윗 CD 바이어스가 양수다. 그래서 프로파일은 각도 하나가 아니라 CD 프로파일 전체로 말한다.</p>
@@ -406,7 +406,7 @@
       ctx.moveTo(v.X(x1 - slope * 20), Yd(d1 - 20)); ctx.lineTo(v.X(x2 + slope * 20), Yd(d2 + 20)); ctx.stroke();
       knob(ctx, v.X(x1), Yd(d1), P, "v"); knob(ctx, v.X(x2), Yd(d2), P, "v");
       // CD 프로파일(오른쪽)
-      const box = { x: w * 0.5 + 48, y: 14, w: w * 0.5 - 48 - 12, h: h - 14 - 50 };
+      const box = { x: w * 0.5 + 48, y: 14, w: w * 0.5 - 48 - 12, h: h - 14 - 72 };
       cdChart(ctx, box, [{ w: m.widths, color: P.accent2, width: 2.2 }], P, false);
       const ang = 90 - Math.atan2(x2 - x1, d2 - d1) / DEG;
       EB.stat("ms-o-a", ang.toFixed(1) + "° <small>(" + d1.toFixed(0) + "~" + d2.toFixed(0) + " nm)</small>");
