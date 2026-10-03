@@ -5,6 +5,30 @@
 <html lang="ko">
 <head>
 <!--head:start {"desc": "트렌치의 허리가 부풀고 구멍이 휜다. 이온 각도 퍼짐, 마스크 패싯에서 튄 이온, 대전된 바닥이 이온을 굽히는 모습, 비대칭이 만드는 트위스팅을 입자 시뮬레이터와 기하 시뮬레이터로 익힌다.", "libs": ["et"]}-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>보잉과 트위스팅 · EtchBook</title>
+<meta name="description" content="트렌치의 허리가 부풀고 구멍이 휜다. 이온 각도 퍼짐, 마스크 패싯에서 튄 이온, 대전된 바닥이 이온을 굽히는 모습, 비대칭이 만드는 트위스팅을 입자 시뮬레이터와 기하 시뮬레이터로 익힌다.">
+<link rel="canonical" href="https://etchbook.euiyun.com/chapters/bowing.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta name="theme-color" content="#c2255c">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="EtchBook">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:title" content="보잉과 트위스팅 · EtchBook">
+<meta property="og:description" content="트렌치의 허리가 부풀고 구멍이 휜다. 이온 각도 퍼짐, 마스크 패싯에서 튄 이온, 대전된 바닥이 이온을 굽히는 모습, 비대칭이 만드는 트위스팅을 입자 시뮬레이터와 기하 시뮬레이터로 익힌다.">
+<meta property="og:url" content="https://etchbook.euiyun.com/chapters/bowing.html">
+<meta property="og:image" content="https://etchbook.euiyun.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":["Chapter","LearningResource"],"@id":"https://etchbook.euiyun.com/chapters/bowing.html#chapter","name":"보잉과 트위스팅","headline":"보잉과 트위스팅 · EtchBook","description":"트렌치의 허리가 부풀고 구멍이 휜다. 이온 각도 퍼짐, 마스크 패싯에서 튄 이온, 대전된 바닥이 이온을 굽히는 모습, 비대칭이 만드는 트위스팅을 입자 시뮬레이터와 기하 시뮬레이터로 익힌다.","url":"https://etchbook.euiyun.com/chapters/bowing.html","position":11,"inLanguage":"ko","isAccessibleForFree":true,"learningResourceType":"인터랙티브 교재","educationalLevel":"공대 학부","image":"https://etchbook.euiyun.com/og.png","dateModified":"2026-10-03","isPartOf":{"@type":"Book","@id":"https://etchbook.euiyun.com/#book","name":"EtchBook · 반도체 식각 교과서","url":"https://etchbook.euiyun.com/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"EtchBook","item":"https://etchbook.euiyun.com/"},{"@type":"ListItem","position":2,"name":"11. 보잉과 트위스팅","item":"https://etchbook.euiyun.com/chapters/bowing.html"}]}]}</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../css/style.css">
+<script src="../js/common.js"></script>
+<script src="../js/etch.js"></script>
 <!--head:end-->
 <style>
   .bw-log { width: 100%; }
@@ -114,7 +138,7 @@
         <div class="stat"><span class="k">측벽 타격이 가장 많은 깊이</span><span class="v" id="ht-o-pk">—</span></div>
         <div class="stat"><span class="k">마스크에 걸리는 이온</span><span class="v" id="ht-o-m">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① σ = 8°, 마스크 60 nm에서 오른쪽 막대그래프의 봉우리가 산화막 윗면 바로 아래에 있다. 그 아래로 갈수록 타격이 줄어든다. 보잉 위치가 마스크 바로 아래인 이유다. ② 마스크를 0으로 줄인다. 봉우리가 산화막 윗면에 바짝 붙고 더 높아진다. 마스크가 그림자를 만들어 주던 몫이 사라졌다. ③ 마스크를 120 nm로 키운다. 산화막 측벽을 맞는 이온이 줄고 봉우리가 약간 아래로 내려간다. ④ σ를 2°로 줄이면 거의 모든 이온이 바닥까지 간다. (모델: 폭 20 nm, 깊이 160 nm의 곧은 트렌치에 입구 전체에서 가우시안 각도로 이온을 고르게 넣어, 처음 맞는 곳만 셌다. 반사·식각에 따른 모양 변화는 뺐다.)</div>
+      <div class="sim-note">해볼 것: ① σ = 8°, 마스크 60 nm에서 오른쪽 막대그래프의 봉우리가 산화막 윗면 바로 아래에 있다. 그 아래로 갈수록 타격이 줄어든다. 보잉 위치가 마스크 바로 아래인 이유다. ② 마스크를 0으로 줄인다. 봉우리가 산화막 윗면에 바짝 붙고 더 높아진다. 마스크가 그림자를 만들어 주던 몫이 사라졌다. ③ 마스크를 120 nm로 키운다. 산화막 측벽을 맞는 이온이 줄고, 마스크 옆면이 대신 맞는다. 마스크가 높을수록 비스듬한 이온을 일찍 걸러 낸다. ④ σ를 2°로 줄이면 거의 모든 이온이 바닥까지 간다. (모델: 폭 20 nm, 깊이 160 nm의 곧은 트렌치에 입구 전체에서 가우시안 각도로 이온을 고르게 넣어, 처음 맞는 곳만 셌다. 반사·식각에 따른 모양 변화는 뺐다.)</div>
     </div>
 
     <p>여기서 실제 보잉이 기하보다 복잡해지는 이유가 둘 있다. 하나는 되먹임이다. 측벽이 조금 부풀면 그 자리의 표면이 이온 쪽으로 기울어 입사각이 작아지고 수율이 오른다. 부푼 곳이 더 빨리 부푼다. 다른 하나는 마스크가 닳는다는 것이다. 마스크가 얇아지면 그림자가 줄고, 모서리가 패싯으로 깎이면 입구가 넓어진다. 첫 시뮬레이터에서 σ를 올렸을 때 마스크가 훨씬 빨리 닳은 것이 그 신호다.</p>
@@ -126,12 +150,12 @@
     <div class="formula">$$\alpha = \varphi, \qquad \theta_{\text{반사}} = 2\varphi - 180°\ \text{→ 수직에서}\ 180° - 2\varphi, \qquad d_{\text{착지}} \approx \frac{x}{\tan(180° - 2\varphi)}$$
       <div class="where">\(\varphi\)는 패싯이 수평면과 이루는 각, \(\alpha\)는 수직 이온이 패싯 법선과 이루는 입사각(\(=\varphi\))이다. 반사된 이온은 수직에서 \(180° - 2\varphi\)만큼 기울어 날아간다. \(x\)는 반사점에서 반대편 측벽까지의 가로 거리, \(d_{\text{착지}}\)는 반사점 아래로 내려간 거리다. 패싯이 가파를수록(\(\varphi\)가 90°에 가까울수록) 반사 이온은 수직에 가깝게 날아 더 깊은 곳에 닿는다.</div>
     </div>
-    <p>아래에서 패싯 아래 끝의 손잡이를 끌어 패싯 각을 바꾼다. 굵은 선은 수직 이온 다발이고, 꺾인 선이 반사된 이온이다. 선의 진하기는 엔진이 쓰는 반사 확률(입사각 65°부터 86°까지 0에서 1로 늘어남)이다.</p>
+    <p>아래에서 왼쪽 패싯 위 끝의 손잡이를 좌우로 끌어 패싯 각을 바꾼다. 굵은 선은 수직 이온 다발이고, 꺾인 선이 반사된 이온이다. 선의 진하기는 엔진이 쓰는 반사 확률(입사각 65°부터 86°까지 0에서 1로 늘어남)이다.</p>
 
     <div class="sim" id="sim-facet">
       <div class="sim-head"><span class="sim-tag">SIMULATOR</span><h3>패싯 반사: 튄 이온은 어느 깊이에 닿나</h3></div>
       <div class="sim-body side">
-        <div class="sim-view"><canvas id="fc-cv"></canvas><span class="hint">패싯 아래 끝의 손잡이를 위아래로 끈다</span></div>
+        <div class="sim-view"><canvas id="fc-cv"></canvas><span class="hint">패싯 위 끝의 손잡이를 좌우로 끈다</span></div>
         <div class="sim-controls">
           <label class="ctrl"><span>패싯 각 φ (수평 기준) <output id="fc-p-out"></output></span><input type="range" id="fc-p" min="35" max="88" step="0.5" value="72"></label>
           <label class="ctrl"><span>트렌치 윗 폭 <output id="fc-w-out"></output></span><input type="range" id="fc-w" min="10" max="60" step="1" value="24"></label>
@@ -144,7 +168,7 @@
         <div class="stat"><span class="k">반사 이온의 기울기</span><span class="v" id="fc-o-t">—</span></div>
         <div class="stat"><span class="k">반대편 측벽 착지 깊이 (산화막 윗면 기준)</span><span class="v" id="fc-o-d">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① φ = 72°에서 반사 이온은 수직에서 36° 기울어 반대편 측벽의 산화막 윗면 근처에 닿는다. 반사 확률은 약 33%다. ② φ를 80°로 올린다. 반사 확률이 70%를 넘고 착지 깊이가 수십 nm로 내려간다. 패싯이 가파를수록 보잉이 깊은 곳에 생긴다. ③ φ를 60° 아래로 내린다. 입사각이 65°보다 작아 반사가 거의 없다. 이온은 패싯을 깎는 데 쓰인다(마스크 침식). ④ 윗 폭을 넓힌다. 같은 각도라도 가로 거리가 길어져 착지가 깊어진다. (모델: 거울 반사, 에너지 손실과 흩어짐은 뺐다. 패싯은 마스크 윗면에서 마스크 바닥 쪽으로 곧게 깎인 비탈로 그렸다. 반사 확률은 <code>ET.sim</code>의 규칙 reflect × (α − 65°)/21°, reflect = 0.7.)</div>
+      <div class="sim-note">해볼 것: ① φ = 72°에서 반사 이온은 수직에서 36° 기울어 반대편 측벽의 산화막 윗면 근처에 닿는다. 반사 확률은 약 23%다. ② φ를 80°로 올린다. 반사 확률이 50%로 오르고 착지 깊이가 수십 nm로 내려간다. 패싯이 가파를수록 보잉이 깊은 곳에 생긴다. ③ φ를 60° 아래로 내린다. 입사각이 65°보다 작아 반사가 거의 없다. 이온은 패싯을 깎는 데 쓰인다(마스크 침식). ④ 윗 폭을 넓힌다. 같은 각도라도 가로 거리가 길어져 착지가 깊어진다. (모델: 거울 반사, 에너지 손실과 흩어짐은 뺐다. 패싯은 마스크 윗면에서 마스크 바닥 쪽으로 곧게 깎인 비탈로 그렸다. 반사 확률은 <code>ET.sim</code>의 규칙 reflect × (α − 65°)/21°, reflect = 0.7.)</div>
     </div>
 
     <p>패싯 반사는 보잉의 위치를 정하는 데 큰 몫을 한다. 패싯이 생기기 전에는 보잉이 없다가, 식각 중반에 마스크 모서리가 깎여 패싯이 생기면 그때부터 특정 깊이가 집중적으로 맞는다. 첫 시뮬레이터에서 보잉이 시간 200 무렵에야 나타난 것도 그 때문이다. 그래서 보잉 대응은 마스크 대응이기도 하다. 마스크가 두껍고 단단하면(선택비가 높으면) 패싯이 늦게 생기고, 패싯의 위치가 높아 반사 이온이 산화막에 닿기 전에 마스크 자신에게 걸린다.</p>
@@ -362,10 +386,11 @@
       s = E.build(); s.setRecipe(E.recipe({ ion: { sigma: S() } })); s.snap();
     }
     function reset() { if (ctl) ctl.stop(); ctl = null; done = false; build(); goLabel($("bw-go"), false, false); cv.redraw(); }
-    // σ = 3° 기준 폭: 처음 한 번만 미리 계산해 둔 값(엔진, 시간 400)
+    // σ = 3° 기준 폭: node에서 같은 엔진으로 시간 400까지 돌려 둔 값 [폭, 깊이 시작, 깊이 끝]
+    const REF3 = [[24, 1, 1], [22, 2, 40], [23, 41, 41], [22, 42, 49], [23, 50, 50], [22, 51, 159], [24, 160, 160]];
     function refWidths() {
       if (ref) return ref;
-      ref = []; for (let d = 1; d <= 160; d++) ref.push([d < 158 ? 22 : 22, -d]);
+      ref = []; REF3.forEach(([wd, a, b]) => { for (let d = a; d <= b; d++) ref.push([wd, -d]); });
       return ref;
     }
     build();
@@ -495,8 +520,8 @@
       ctx.beginPath(); ctx.moveTo(R + side, Y(0)); ctx.lineTo(both.checked ? R + fw * scale : R, Y(0)); ctx.lineTo(R, Y(both.checked ? FH : 0)); ctx.lineTo(R, Y(HM)); ctx.lineTo(R + side, Y(HM)); ctx.closePath(); ctx.fill();
       ctx.fillStyle = ET.matColor("ox"); ctx.fillRect(L - side, Y(HM), side, D * scale); ctx.fillRect(R, Y(HM), side, D * scale);
       ctx.fillStyle = ET.matColor("nit"); ctx.fillRect(L - side, Y(HM + D), 2 * side + R - L, 6);
-      knob(ctx, L, Y(FH), P, "v");
-      lay = { Y, scale, top };
+      knob(ctx, L - fw * scale, Y(0), P, "h");
+      lay = { L, scale };
       // 반사 기하: 왼쪽 패싯. 패싯 법선은 (cosφ, -sinφ)를 수평·수직에서 … 계산은 벡터로
       const nx = Math.sin(phi * DEG), ny = -Math.cos(phi * DEG); // 왼쪽 패싯의 바깥 법선(오른쪽 위)
       const aDeg = phi; const pr = reflectP(aDeg, 0.7);
@@ -533,7 +558,7 @@
         EB.stat("fc-o-d", lo < 0 && hi < 0 ? sp("마스크 옆면", "warn-t") : f0(Math.max(0, lo)) + " ~ " + f0(Math.max(0, hi)) + NM);
       } else EB.stat("fc-o-d", sp("바닥까지 간다", "ok-t"));
     }, { aspect: 0.8, minHeight: 340, maxHeight: 480 });
-    EB.drag(cv.canvas, { move(x, y) { if (!lay) return; const z = (y - lay.top) / lay.scale; /* 패싯 아래 끝 높이 FH 고정, 각도는 손잡이 높이 대신 위아래로 */ const f = EB.clamp(88 - (z - 5) * 1.2, 35, 88); Pp.set(Math.round(f * 2) / 2); } });
+    EB.drag(cv.canvas, { move(x) { if (!lay) return; const fw = Math.max(0.5, (lay.L - x) / lay.scale); Pp.set(Math.round(EB.clamp(Math.atan(FH / fw) / DEG, 35, 88) * 2) / 2); } });
   })();
 
   /* ---------------------------------------------------------- 4. 대전 궤적 */
@@ -568,17 +593,18 @@
     const cv = EB.canvas("#ch-cv", (ctx, w, h) => {
       const P = EB.palette();
       if (!s) return;
-      const v = ET.draw(ctx, { x: 8, y: 10, w: w - 16, h: h - 18 }, s, { keepAspect: true, traces: true, outline: P.text, outlineWidth: 1, y0: 40, y1: s.height, x0: -6, x1: 46 });
+      const v = ET.draw(ctx, { x: 8, y: 10, w: w - 16, h: h - 18 }, s, { keepAspect: true, traces: true, outline: P.text, outlineWidth: 1, x0: 0, x1: 40, y0: s.marks.oxTop + 50, y1: s.height });
       const yb = s.marks.oxBot;
       const q = Q();
       if (q > 0) {
         for (let i = 0; i < 5; i++) txt(ctx, "+", v.X(12 + i * 4), v.Y(yb) - 4, P.bad, "center", "bottom", 12, true);
-        for (let j = 0; j < 3; j++) { txt(ctx, "−", v.X(8.2), v.Y(s.marks.oxTop + 10 + j * 14), P.accent2, "right", "middle", 12, true); txt(ctx, "−", v.X(31.8), v.Y(s.marks.oxTop + 10 + j * 14), P.accent2, "left", "middle", 12, true); }
+        for (let j = 0; j < 3; j++) { txt(ctx, "−", v.X(8.2), v.Y(s.marks.oxTop + 56 + j * 12), P.accent2, "right", "middle", 12, true); txt(ctx, "−", v.X(31.8), v.Y(s.marks.oxTop + 56 + j * 12), P.accent2, "left", "middle", 12, true); }
+        txt(ctx, "아래쪽 110 nm만 확대", v.box.x + 4, v.box.y + 4, P.dim, "left", "top", 10);
       }
       EB.stat("ch-o-w", f0(stats.wall * 100) + "<small>%</small>");
       EB.stat("ch-o-b", f0(stats.bot * 100) + "<small>%</small>");
       EB.stat("ch-o-st", q < 0.05 ? "대전 없음" : stats.wall > 0.4 ? sp("측벽 아래쪽 집중 타격", "bad-t") : stats.wall > 0.15 ? sp("이온이 벽 쪽으로 휜다", "warn-t") : "약한 휨");
-    }, { aspect: 0.9, minHeight: 320, maxHeight: 460 });
+    }, { aspect: 0.75, minHeight: 320, maxHeight: 440 });
     $("ch-new").addEventListener("click", () => { seed++; fire(); });
     fire();
   })();

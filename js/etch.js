@@ -528,7 +528,7 @@
         if (r > maxRate) maxRate = r;
         if (DP[c] > maxRate) maxRate = DP[c];
       }
-      let dt = 0.5 / maxRate;
+      let dt = 0.5 * dx / maxRate; // 가장 빠른 셀이 반 칸 깎이도록
       if (dtMax != null && dt > dtMax) dt = dtMax;
       for (let k = 0; k < touched.length; k++) {
         const c = touched[k];
@@ -552,7 +552,7 @@
       const F = S.flux;
       F.cells = touched.slice(); F.rate = rates; F.ion = new Float32Array(touched.length); F.neu = new Float32Array(touched.length); F.pol = new Float32Array(touched.length);
       for (let k = 0; k < touched.length; k++) { const c = touched[k]; F.ion[k] = S.hr[c]; F.neu[k] = S.hn[c]; F.pol[k] = S.hp[c]; S.hi[c] = S.hs[c] = S.hr[c] = S.hn[c] = S.hp[c] = 0; }
-      const tu = dt * dx * R0; // 시간 단위: 기본 산화막 레시피로 열린 평면이 1 nm 깎이는 시간
+      const tu = dt * R0; // 시간 단위: 기본 산화막 레시피로 열린 평면이 1 nm 깎이는 시간
       S.t += tu;
       S.steps++;
       return tu;
@@ -561,7 +561,7 @@
     S.run = function (t, maxSteps) {
       const end = S.t + t;
       let k = 0;
-      while (S.t < end - 1e-9 && k < (maxSteps || 100000)) { S.step((end - S.t) / (dx * R0)); k++; }
+      while (S.t < end - 1e-9 && k < (maxSteps || 100000)) { S.step((end - S.t) / R0); k++; }
       return S;
     };
     /** 열린 평면에서 재질 key가 깎이는 속도(nm / 시간 단위). 기본 산화막 레시피의 산화막 = 1 */
@@ -957,7 +957,7 @@
       if (!ctl.running) return;
       const t0 = performance.now();
       while (s.t < end - 1e-9 && performance.now() - t0 < budget) {
-        s.step((Math.min(end, nextSnap) - s.t) / (s.dx * ET.R0));
+        s.step((Math.min(end, nextSnap) - s.t) / ET.R0);
         if (s.t >= nextSnap - 1e-9) { s.snap(); nextSnap += o.snapEvery; }
       }
       if (o.onFrame) o.onFrame(s);
@@ -994,7 +994,7 @@
    */
   ET.EB20 = {
     pitch: 40, cd: 20, depth: 160, mask: 60, stop: 15, si: 20, head: 14,
-    spec: { angle: 88.5, bow: 1.5, micro: 2, maskLeft: 15, stopLoss: 3 },
+    spec: { angle: 88.5, bow: 3, micro: 2, maskLeft: 15, stopLoss: 3 },
     build(o) {
       o = o || {};
       const E = ET.EB20, pitch = o.pitch || E.pitch, cd = o.cd || E.cd;

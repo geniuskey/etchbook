@@ -232,7 +232,7 @@
   let cv = null, lay = null, draft = null, muted = false;
   const done = {};
   let msReady = false;
-  const tOf = (s) => s.t / s.dx; // 엔진 시간은 셀 크기에 비례해 늘어나므로 dx로 나눈다
+  const tOf = (s) => s.t;
   const busy = (on) => $("lab-busy").classList.toggle("on", !!on);
 
   /* ---------------------------------------------------------------- 손잡이 */
@@ -395,8 +395,8 @@
     const saveEvery = Math.max(10, Math.round(T / 40 / 5) * 5);
     let nextSave = (Math.floor(tOf(s) / saveEvery) + 1) * saveEvery;
     busy(1); $("lab-play").textContent = "멈춤"; hint();
-    L.run = ET.runAsync(s, (T - tOf(s)) * s.dx, {
-      budget: 14, snapEvery: 20 * s.dx,
+    L.run = ET.runAsync(s, (T - tOf(s)), {
+      budget: 14, snapEvery: 20,
       onFrame: () => {
         const t = tOf(s);
         if (t >= nextSave - 1e-6) { L.saves.push({ t, st: s.save() }); nextSave += saveEvery; timeline(); }

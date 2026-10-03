@@ -474,7 +474,7 @@
       else { tView = Math.min(Tt(), tNow); viewAt(view, tView); view.snaps = BASE.saves[Math.round(tView / DT)].snaps.slice(); s = view; }
       // 배치: 넓으면 왼쪽 단면 + 오른쪽 그래프, 좁으면 위아래
       const xsBox = narrow ? { x: 6, y: 6, w: w - 12, h: h * 0.52 } : { x: 6, y: 6, w: w * 0.36, h: h - 12 };
-      const chBox = narrow ? { x: 46, y: h * 0.52 + 14, w: w - 62, h: h * 0.48 - 56 } : { x: w * 0.36 + 52, y: 14, w: w * 0.64 - 70, h: h - 62 };
+      const chBox = narrow ? { x: 58, y: h * 0.52 + 14, w: w - 74, h: h * 0.48 - 56 } : { x: w * 0.36 + 52, y: 14, w: w * 0.64 - 70, h: h - 62 };
       const v = ET.draw(ctx, xsBox, s, { x0: -20, x1: 60, y0: narrow ? 60 : 0, keepAspect: true, history: true, outline: P.axis, outlineWidth: 1 });
       void v;
       const { co, cn: cnv } = rates();
@@ -706,7 +706,7 @@
         for (let i = 0; i < RING; i++) { const x = (i + 0.5) / RING, kk = 1 + (ke - 1) * x * x, wgt = x; const tb = tt * kk; if (tb > tMax) { s = NaN; break; } s += wgt * kk * interp(co, tb); wsum += wgt; }
         dW.push([tt, s / wsum / CO0]);
       }
-      const chBox = narrow ? { x: 46, y: xsH + 40, w: w - 62, h: h - xsH - 84 } : { x: 2 * xsW + 70, y: 14, w: w - 2 * xsW - 86, h: h - 62 };
+      const chBox = narrow ? { x: 58, y: xsH + 40, w: w - 74, h: h - xsH - 84 } : { x: 2 * xsW + 70, y: 14, w: w - 2 * xsW - 86, h: h - 62 };
       EB.chart(ctx, chBox, { x: [0, 400], y: [0, 1.2], xLabel: "웨이퍼 시간", yLabel: "CO 세기", series: [{ data: dC, color: P.accent, width: 1.6, dash: [5, 3] }, { data: dW, color: P.accent2, width: 2.4 }], vlines: [{ x: t, color: P.text, dash: [2, 3] }], yTicks: [0, 0.5, 1] });
       if (!have) txt(ctx, "‘기준 식각 계산’을 누른다", chBox.x + chBox.w / 2, chBox.y + chBox.h / 2, P.dim, "center", "middle", 13);
       const mC = ET.measure(vC, { x: 20 }), mE = ET.measure(vE, { x: 20 });

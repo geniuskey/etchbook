@@ -233,7 +233,7 @@
         <div class="stat"><span class="k">한 주기 시간(흡착 + 2 s)</span><span class="v" id="ad-o-t">—</span></div>
         <div class="stat"><span class="k">판정</span><span class="v s" id="ad-o-st">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① 연속 식각으로 본다. 폭 10 nm 트렌치가 80 nm 트렌치의 절반 남짓밖에 못 판다. 흐린 선은 20주기마다의 바닥이다. ② ALE, 흡착 3τ로 바꾼다. 차이가 줄지만 아직 좁은 쪽이 뒤처진다. 깊어질수록 바닥까지 염소가 덜 와 포화가 덜 되기 때문이다. ③ 흡착을 12τ 넘게 늘린다. 네 트렌치가 거의 같은 깊이가 된다. 대신 한 주기가 길어진다. (모델: 바닥에 오는 염소의 비 = 1/(1 + s(1/K − 1)), K = √(1+A²) − A(긴 트렌치가 입구를 보는 비율), 붙을 확률 s = 0.2, A = 깊이/폭(<code>ET.coburn</code>, <code>ET.slotView</code>). ALE의 EPC = 0.5 nm × (1 − exp(−비 × 흡착 시간/τ)). 연속 식각의 속도 = 0.5 nm × 비.)</div>
+      <div class="sim-note">해볼 것: ① 연속 식각으로 본다. 폭 10 nm 트렌치가 80 nm 트렌치의 3분의 2쯤밖에 못 판다. 흐린 선은 20주기마다의 바닥이다. ② ALE, 흡착 3τ로 바꾼다. 차이가 줄지만 아직 좁은 쪽이 뒤처진다. 깊어질수록 바닥까지 염소가 덜 와 포화가 덜 되기 때문이다. ③ 흡착을 12τ 넘게 늘린다. 네 트렌치가 거의 같은 깊이가 된다. 대신 한 주기가 길어진다. (모델: 바닥에 오는 염소의 비 = 1/(1 + s(1/K − 1)), K = √(1+A²) − A(긴 트렌치가 입구를 보는 비율), 붙을 확률 s = 0.2, A = 깊이/폭(<code>ET.coburn</code>, <code>ET.slotView</code>). ALE의 EPC = 0.5 nm × (1 − exp(−비 × 흡착 시간/τ)). 연속 식각의 속도 = 0.5 nm × 비.)</div>
     </div>
 
     <p>표에서 연속 식각과 ALE를 나란히 둔다.</p>
@@ -576,7 +576,7 @@
         ctx.save(); ctx.beginPath(); ctx.rect(10, y0, w - 20, ph); ctx.clip();
         ctx.fillStyle = ET.matColor("si");
         for (let c = 0; c < NC; c++) { const top = (hs[c] - shift + H0 / 2) * cs; ctx.fillRect(10 + c * cs, y0 + top, cs + 0.5, ph - top); }
-        ctx.strokeStyle = P.text; ctx.globalAlpha = 0.18; ctx.lineWidth = 0.5;
+        ctx.strokeStyle = P.text; ctx.globalAlpha = 0.07; ctx.lineWidth = 0.5;
         for (let r = 0; r < rowsVis; r++) { ctx.beginPath(); ctx.moveTo(10, y0 + r * cs); ctx.lineTo(w - 10, y0 + r * cs); ctx.stroke(); }
         ctx.globalAlpha = 1; ctx.lineWidth = 1;
         hist.forEach((hh) => { ctx.strokeStyle = P.dim; ctx.globalAlpha = 0.5; ctx.beginPath(); hh.forEach((v, c) => { const y = y0 + (v - shift + H0 / 2) * cs; if (c) ctx.lineTo(10 + c * cs, y); else ctx.moveTo(10, y); ctx.lineTo(10 + (c + 1) * cs, y); }); ctx.stroke(); ctx.globalAlpha = 1; });

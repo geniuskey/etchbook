@@ -396,7 +396,7 @@
   const DEG = Math.PI / 180;
   const busy = (id, on) => $(id).classList.toggle("on", !!on);
   // 엔진의 시간 단위는 셀 크기 dx에 반비례해 늘어난다(열린 평면 1 nm = 시간 dx). 이 장은 시간을 dx로 나눠 보여 준다.
-  const tOf = (s) => s.t / s.dx;
+  const tOf = (s) => s.t;
 
   /* ================================================================ 1. 깊은 트렌치 */
   (function () {
@@ -455,8 +455,8 @@
       if (tOf(s) >= T - 1) reset();
       busy("dp-busy", 1);
       d0rate = 0.62;
-      run = ET.runAsync(s, (T - tOf(s)) * s.dx, {
-        budget: 14, snapEvery: (T / 12) * s.dx,
+      run = ET.runAsync(s, (T - tOf(s)), {
+        budget: 14, snapEvery: T / 12,
         onFrame: () => { const m = readout(); hist.push([tOf(s), m.depth]); cv.redraw(); },
         onDone: () => { busy("dp-busy", 0); readout(); cv.redraw(); },
       });
@@ -591,7 +591,7 @@
       if (run && run.running) return;
       if (tOf(s) >= 299) reset();
       busy("on-busy", 1);
-      run = ET.runAsync(s, (300 - tOf(s)) * s.dx, { budget: 14, snapEvery: 30 * s.dx, onFrame: () => { readout(); cv.redraw(); }, onDone: () => { busy("on-busy", 0); readout(); cv.redraw(); } });
+      run = ET.runAsync(s, (300 - tOf(s)), { budget: 14, snapEvery: 30, onFrame: () => { readout(); cv.redraw(); }, onDone: () => { busy("on-busy", 0); readout(); cv.redraw(); } });
     });
     $("on-re").addEventListener("click", reset);
   })();
