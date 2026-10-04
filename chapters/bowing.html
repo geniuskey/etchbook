@@ -591,7 +591,7 @@
       if (q > 0) {
         for (let i = 0; i < 5; i++) txt(ctx, "+", v.X(12 + i * 4), v.Y(yb) - 4, P.bad, "center", "bottom", 12, true);
         for (let j = 0; j < 3; j++) { txt(ctx, "−", v.X(8.2), v.Y(s.marks.oxTop + 56 + j * 12), P.accent2, "right", "middle", 12, true); txt(ctx, "−", v.X(31.8), v.Y(s.marks.oxTop + 56 + j * 12), P.accent2, "left", "middle", 12, true); }
-        txt(ctx, "아래쪽 110 nm만 확대", v.box.x + 4, v.box.y + 4, P.dim, "left", "top", 10);
+        txt(ctx, "아래쪽 110 nm만 확대", 8, 6, P.dim, "left", "top", 10);
       }
       EB.stat("ch-o-w", f0(stats.wall * 100) + "<small>%</small>");
       EB.stat("ch-o-b", f0(stats.bot * 100) + "<small>%</small>");
