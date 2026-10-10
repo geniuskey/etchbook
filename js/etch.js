@@ -166,7 +166,7 @@
     return a;
   }
   ET.merge = merge;
-  // 시간 단위: 기본 산화막 레시피에서 열린 평면의 산화막 식각 속도(엔진 내부 단위)
+  // 시간 단위: 기본 산화막 레시피의 이론적 openRate로 정규화(실제 셀 제거 속도와는 다름)
   const R0 = (function () {
     const R = RECIPES.oxide, mm = R.mat.ox, HI = R.ion.flux * R.ion.energy, HN = R.neu.flux * R.neu.stick;
     return mm.ie * HI * (HN / (HN + R.gamma * HI)) + mm.ch * HN + mm.sp * HI;
@@ -183,7 +183,7 @@
    * s.open("ac", [[10, 30]], { taper: 0 })                  이 구간의 마스크를 연다(x는 nm). taper°는 열린 폭이 위로 넓어지는 각
    * s.paint((x, z) => key | null | undefined)              임의 모양. z는 바닥에서 잰 높이(nm). undefined면 그대로 둔다
    * s.setRecipe(ET.recipe("oxide"))
-   * s.run(t)            시간 t(상대 단위: 열린 평면의 대상막이 1 nm 깎이는 시간 = 1/R₀)만큼 진행
+   * s.run(t)            시간 t(상대 단위: 기본 레시피의 이론적 openRate로 정규화)만큼 진행
    * s.step()            입자 한 묶음을 날리고 표면을 한 번 갱신
    */
   ET.sim = function (o) {
@@ -552,7 +552,7 @@
       const F = S.flux;
       F.cells = touched.slice(); F.rate = rates; F.ion = new Float32Array(touched.length); F.neu = new Float32Array(touched.length); F.pol = new Float32Array(touched.length);
       for (let k = 0; k < touched.length; k++) { const c = touched[k]; F.ion[k] = S.hr[c]; F.neu[k] = S.hn[c]; F.pol[k] = S.hp[c]; S.hi[c] = S.hs[c] = S.hr[c] = S.hn[c] = S.hp[c] = 0; }
-      const tu = dt * R0; // 시간 단위: 기본 산화막 레시피로 열린 평면이 1 nm 깎이는 시간
+      const tu = dt * R0; // 이론적 openRate 기준의 시간 정규화; 실제 셀 제거량은 별도 측정
       S.t += tu;
       S.steps++;
       return tu;
@@ -564,12 +564,12 @@
       while (S.t < end - 1e-9 && k < (maxSteps || 100000)) { S.step((end - S.t) / R0); k++; }
       return S;
     };
-    /** 열린 평면에서 재질 key가 깎이는 속도(nm / 시간 단위). 기본 산화막 레시피의 산화막 = 1 */
+    /** 재질 key의 이론적 열린 평면 속도(nm / 정규화 시간). 기본 산화막 = 1; 실제 셀 제거 속도는 별도 측정 */
     S.rateOf = (key) => S.openRate(key) / R0;
     /** 등고선 기록: 지금의 윤곽선을 저장(그리기에서 시간에 따라 흐리게 겹친다) */
     S.snap = function () { S.snaps.push({ t: S.t, seg: ET.contour(S) }); if (S.snaps.length > 60) S.snaps.shift(); return S; };
 
-    /** 열린 평면에서 재질 key의 식각 속도(상대값, 이 엔진의 시간 단위 기준) */
+    /** 재질 key의 이론적 열린 평면 속도(상대값, 시간 정규화 기준) */
     S.openRate = function (key) {
       const R = S.recipe, mm = R.mat[key] || { ie: 0, ch: 0, sp: 0, pol: 1 };
       const HI = R.ion.flux * R.ion.energy, HN = R.neu.flux * R.neu.stick, HP = R.pol.flux * R.pol.stick;
@@ -587,7 +587,7 @@
   /**
    * const w = ET.wet(s, { rates: { ox: 1, si: 0 } });
    * w.apply(t)   시간 t에 깎인 모습으로 s를 바꾼다(처음 상태에서 다시 계산하므로 되감기도 된다).
-   * w.T          셀마다 식각액이 도달한 시간(Float64Array, 못 닿으면 Infinity)
+   * w.T          셀 중심에 식각 전면이 도달한 시간(Float64Array, 못 닿으면 Infinity)
    * rates: 재질별 식각 속도(nm/단위시간). 0이면 깎이지 않는다(마스크).
    * 시작점은 처음부터 진공이면서 맨 위와 이어진 셀이다.
    */
@@ -620,28 +620,57 @@
       if (!a && !b) continue;
       if (Math.abs(a) === 2 && Math.abs(b) === 2) continue;
       if ((Math.abs(a) === 2 && b === 0) || (Math.abs(b) === 2 && a === 0)) continue;
-      ST.push([a, b, Math.hypot(a, b) * dx]);
+      // Integrate slowness along the centre-to-centre segment. A long
+      // move must pay for every crossed material, not only its destination.
+      const ts = [0, 1];
+      for (const v of [a, b]) for (let k = 0; k < Math.abs(v); k++) ts.push((k + 0.5) / Math.abs(v));
+      ts.sort((x, y) => x - y);
+      const cuts = ts.filter((t, i) => !i || t !== ts[i - 1]);
+      const cells = [], corners = [], d = Math.hypot(a, b) * dx;
+      for (let i = 1; i < cuts.length; i++) {
+        const t = (cuts[i - 1] + cuts[i]) / 2;
+        cells.push([Math.floor(a * t + 0.5), Math.floor(b * t + 0.5), (cuts[i] - cuts[i - 1]) * d]);
+      }
+      // Do not pass through a zero-width corner between insoluble cells.
+      for (let i = 1; i < cells.length; i++) {
+        const p = cells[i - 1], q = cells[i];
+        if (p[0] !== q[0] && p[1] !== q[1]) corners.push([p[0], q[1]], [q[0], p[1]]);
+      }
+      ST.push({ a, b, cells, corners });
     }
+    const at = (ix, iy) => {
+      if (iy < 0 || iy >= H) return -1;
+      if (ix < 0 || ix >= W) {
+        if (!s.periodic) return -1;
+        ix = ((ix % W) + W) % W;
+      }
+      return iy * W + ix;
+    };
     while (heap.size) {
       const [tc, c] = heap.pop();
       if (done[c] || tc > T[c]) continue;
       done[c] = 1;
       const ix = c % W, iy = (c / W) | 0;
-      for (const [a, b, d] of ST) {
-        let jx = ix + a; const jy = iy + b;
-        if (jy < 0 || jy >= H) continue;
-        if (jx < 0 || jx >= W) { if (!s.periodic) continue; jx = (jx + W) % W; }
-        const e = jy * W + jx, m = mat0[e];
-        if (!m) continue; // 처음부터 진공인 곳은 이미 0
-        let r = rate[m];
-        if (r <= 0) continue;
-        // 2칸 건너뛰는 이동은 사이 셀도 깎일 수 있어야 한다
-        if (Math.abs(a) === 2 || Math.abs(b) === 2) {
-          const mx = ix + Math.round(a / 2), my = iy + Math.round(b / 2);
-          const m2 = mat0[my * W + (((mx % W) + W) % W)];
-          if (m2 && rate[m2] <= 0) continue;
+      for (const move of ST) {
+        const e = at(ix + move.a, iy + move.b);
+        if (e < 0) continue;
+        let cost = 0, blocked = false;
+        for (const [a, b] of move.corners) {
+          const j = at(ix + a, iy + b);
+          if (j < 0 || (mat0[j] && rate[mat0[j]] <= 0)) { blocked = true; break; }
         }
-        const nt = tc + d / r;
+        if (blocked) continue;
+        for (const [a, b, length] of move.cells) {
+          const j = at(ix + a, iy + b);
+          if (j < 0) { blocked = true; break; }
+          const m = mat0[j];
+          if (!m) continue; // Liquid fills a newly opened void without etch delay.
+          const r = rate[m];
+          if (r <= 0) { blocked = true; break; }
+          cost += length / r;
+        }
+        if (blocked) continue;
+        const nt = tc + cost;
         if (nt < T[e]) { T[e] = nt; heap.push(nt, e); }
       }
     }
@@ -703,6 +732,15 @@
     const xc = Math.floor((opt.x != null ? opt.x : s.width / 2) / dx);
     const wrap = (i) => (s.periodic ? ((i % W) + W) % W : Math.max(0, Math.min(W - 1, i)));
     const empty = (ix, iy) => { const c = iy * W + wrap(ix); return !s.mat[c] || s.phi[c] < 0.5; };
+    // Count each cell at most once, including rows where adjacent openings merge.
+    const span = (iy) => {
+      if (iy < 0 || iy >= H || !empty(xc, iy)) return null;
+      let l = 0, r = 0;
+      while (l < W - 1 && (s.periodic || xc - l - 1 >= 0) && empty(xc - l - 1, iy)) l++;
+      while (l + r + 1 < W && (s.periodic || xc + r + 1 < W) && empty(xc + r + 1, iy)) r++;
+      return { w: (l + r + 1) * dx, l: (xc - l) * dx, r: (xc + r + 1) * dx,
+        merged: !!s.periodic && l + r + 1 === W };
+    };
     const widths = [];
     let depthRow = ref - 1;
     for (let iy = ref; iy < H; iy++) {
@@ -712,11 +750,8 @@
         for (let d = 1; d < W / 2; d++) { if (empty(xc - d, iy) || empty(xc + d, iy)) { any = true; break; } if (!empty(xc - d, iy - 1) && !empty(xc + d, iy - 1)) break; }
         if (!any) break;
       }
-      let l = 0, r = 0;
       if (empty(xc, iy)) {
-        while (l < W && empty(xc - l - 1, iy)) l++;
-        while (r < W && empty(xc + r + 1, iy)) r++;
-        widths.push({ d: (iy - ref + 1) * dx, w: (l + r + 1) * dx, l: (xc - l) * dx, r: (xc + r + 1) * dx });
+        widths.push({ d: (iy - ref + 1) * dx, ...span(iy) });
         depthRow = iy;
       } else break;
     }
@@ -742,12 +777,15 @@
       let mx = 0, mxd = 0;
       widths.forEach((q) => { if (q.w > mx) { mx = q.w; mxd = q.d; } });
       out.max = mx; out.bow = Math.max(0, mx - w0); out.bowAt = mxd;
-      // 측벽 각: 깊이 10%~90%의 왼쪽 벽 위치를 직선 맞춤
+      // 측벽 각: 깊이 10%와 90%의 각 벽 위치를 잇는 두 점 기울기.
       const a = at(0.1), b = at(0.9);
       if (widths.length > 4 && b.d > a.d) {
-        const dw = ((b.r - b.l) - (a.r - a.l)) / 2; // 한쪽 벽이 들어온 양(음수면 넓어짐)
-        out.angle = 90 - Math.atan2(-dw, b.d - a.d) / DEG;
+        out.angleLeft = 90 - Math.atan2(b.l - a.l, b.d - a.d) / DEG;
+        out.angleRight = 90 - Math.atan2(a.r - b.r, b.d - a.d) / DEG;
+        out.angle = out.angleLeft;
       } else out.angle = 90;
+      out.widthMerged = widths.some((q) => q.merged);
+      out.angleValid = !a.merged && !b.merged;
     }
     // 마스크 남은 두께(마스크가 있는 열들 중 가장 얇은 곳은 홈 가장자리 근처이므로 홈에서 떨어진 열의 최소)
     const mi = MI[mk];
@@ -761,14 +799,20 @@
       }
       out.maskMax = maxT * dx;
       out.maskLeft = (isFinite(best) ? best : 0) * dx;
-      // 마스크 바닥 아래로 파고든 폭(언더컷): 기준 행 바로 아래 몇 행의 폭 - 마스크 바닥의 열린 폭
+      // 언더컷은 마스크 바로 아래 행에서 잰다. 깊은 곳의 보잉과 구분한다.
       const mb = s.marks[mk + "Bot"];
       if (mb != null) {
-        let l = 0, r = 0;
-        const iy = mb - 1;
-        if (empty(xc, iy)) { while (l < W && empty(xc - l - 1, iy)) l++; while (r < W && empty(xc + r + 1, iy)) r++; }
-        out.maskOpen = (l + r + 1) * dx;
-        out.undercut = Math.max(0, ((out.max || 0) - out.maskOpen) / 2);
+        const opening = span(mb - 1), below = span(mb);
+        out.maskOpen = opening ? opening.w : 0;
+        out.undercutLeft = opening && below ? Math.max(0, opening.l - below.l) : 0;
+        out.undercutRight = opening && below ? Math.max(0, below.r - opening.r) : 0;
+        out.undercut = Math.max(out.undercutLeft, out.undercutRight);
+        out.undercutMerged = !!(below && below.merged);
+        if (out.undercutMerged && opening) {
+          // Once no separating wall remains, report the half-gap consumed,
+          // rather than an arbitrary unwrapped edge coordinate.
+          out.undercut = Math.max(0, (below.w - opening.w) / 2);
+        }
       }
     }
     return out;
@@ -973,8 +1017,10 @@
      ====================================================================== */
   /** 아레니우스: 상대 속도 exp(-Ea/kT). Ea eV, T K */
   ET.arrhenius = (Ea, T) => Math.exp(-Ea / (8.617333e-5 * T));
-  /** 긴 슬롯(2D 트렌치)에서 바닥이 위쪽 입구를 직접 보는 비율 √(1+A²) − A. A = 깊이/폭 */
-  ET.slotView = (A) => Math.sqrt(1 + A * A) - A;
+  /** 긴 슬롯의 면적 평균 직접 도달률(벽 반사 제외). A = 깊이/폭 */
+  ET.slotView = (A) => 1 / (Math.sqrt(1 + A * A) + A);
+  /** 같은 지름의 동축 원판 사이 면적 평균 직접 도달률(벽 반사 제외) */
+  ET.holeView = (A) => ET.slotView(A) ** 2;
   /** 클라우징 투과 확률 근사(원통): 1 / (1 + 3A/4)  (A = 깊이/지름) */
   ET.clausing = (A) => 1 / (1 + 0.75 * A);
   /** 코번-윈터스: 바닥 플럭스 비 = 1 / (1 + s(1/K − 1)) */

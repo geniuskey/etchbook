@@ -80,7 +80,7 @@
       <li><b>레시피</b>를 고르고 손잡이를 돌린다. 레시피를 바꾸면 손잡이가 그 레시피의 기본값으로 돌아간다. 손잡이는 식각 도중에도 바꿀 수 있고, 바꾼 순간부터 적용된다.</li>
       <li><b>재생</b>을 누른다. 목표 시간까지 돌다가 멈춘다. 아래 시간 막대를 끌면 저장해 둔 순간으로 되감긴다. 되감은 자리에서 다시 재생하면 그 뒤는 새로 계산한다.</li>
     </ol>
-    <div class="callout warn"><strong>모델의 가정</strong> 2차원 단면이고 가로는 주기 경계다(끝없이 되풀이되는 긴 트렌치 배열). 시간 단위는 기본 산화막 레시피에서 열린 평면의 산화막이 1 nm 깎이는 시간이다. 넓은 단면은 셀을 2 nm로 키워 계산하므로 셀 1 nm 단면과 숫자가 몇 nm 다를 수 있다. 몬테카를로라 같은 조건에서도 1 nm 안팎으로 흔들린다. 경향을 보는 도구이지 실제 장비 조건을 주는 도구가 아니다.</div>
+    <div class="callout warn"><strong>모델의 가정</strong> 2차원 단면이고 가로는 주기 경계다(끝없이 되풀이되는 긴 트렌치 배열). 시간 단위는 기본 산화막 레시피의 이론적 열린 평면 속도(openRate)로 정규화했다. 실제 셀 제거량은 이론값과 다를 수 있다. 넓은 단면은 셀을 2 nm로 키워 계산하므로 셀 1 nm 단면과 숫자가 몇 nm 다를 수 있다. 몬테카를로라 같은 조건에서도 1 nm 안팎으로 흔들린다. 경향을 보는 도구이지 실제 장비 조건을 주는 도구가 아니다.</div>
   </section>
 
   <section id="bench">
@@ -134,7 +134,7 @@
       <div class="mat-legend"><span><i style="background:var(--m-ac)"></i>비정질 탄소</span><span><i style="background:var(--m-sion)"></i>SiON</span><span><i style="background:var(--m-ox)"></i>산화막</span><span><i style="background:var(--m-nit)"></i>질화막</span><span><i style="background:var(--m-si)"></i>실리콘</span><span><i style="background:var(--m-cfx)"></i>고분자</span></div>
       <div class="sim-note">해볼 것: ① EB-20 그대로 재생해 시간 300 근처에서 정지막에 닿고 판정이 합격인지 본다. ② 시간 막대를 200으로 되감고 O₂를 1로 올려 다시 재생해 정지막이 얼마나 더 깎이는지 본다. ③ 빈 마스크에서 폭이 다른 개구를 서너 개 그리고 돌려 오른쪽 그래프의 깊이 곡선을 견준다. ④ σ를 8°로 넓혀 보잉의 위치를 찾는다. (가정은 위 상자. 판정 규격은 EB-20 적층에서만 계산한다.)</div>
     </div>
-    <p>숫자판의 값은 '재기'로 고른 홈 하나의 치수다. 깊이는 대상 막 윗면에서 가운데 바닥까지, 측벽 각은 깊이 10%~90% 구간의 왼쪽 벽을 직선으로 맞춘 각(90°가 수직), 보잉은 가장 넓은 폭에서 윗 폭을 뺀 값, 마이크로트렌치는 가장 깊은 점과 가운데 깊이의 차이, 남은 마스크는 마스크가 가장 얇은 열의 두께, 정지막 손실은 홈 바닥에서 깎인 질화막의 최대 두께다. 판정 아래 줄은 규격 항목 하나하나의 통과 여부다.</p>
+    <p>숫자판의 값은 '재기'로 고른 홈 하나의 치수다. 깊이는 대상 막 윗면에서 가운데 바닥까지, 측벽 각은 깊이 10%와 90%의 왼쪽 벽 두 점을 잇는 각(90°가 수직), 보잉은 가장 넓은 폭에서 윗 폭을 뺀 값, 마이크로트렌치는 가장 깊은 점과 가운데 깊이의 차이, 남은 마스크는 마스크가 가장 얇은 열의 두께, 정지막 손실은 홈 바닥에서 깎인 질화막의 최대 두께다. 판정 아래 줄은 규격 항목 하나하나의 통과 여부다.</p>
   </section>
 
   <section id="missions">
@@ -327,7 +327,7 @@
     if (L.P.stack !== "eb20" || !m) return null;
     const items = [
       ["정지막까지 열림", m.opened, m.opened ? "예" : "아니오"],
-      ["측벽 각 ≥ " + SPEC.angle + "°", m.angle >= SPEC.angle, m.angle != null ? m.angle.toFixed(1) + "°" : "—"],
+      ["측벽 각 ≥ " + SPEC.angle + "°", m.angleValid !== false && m.angle >= SPEC.angle, m.angleValid !== false && m.angle != null ? m.angle.toFixed(1) + "°" : "—"],
       ["보잉 ≤ " + SPEC_BOW + " nm", m.bow <= SPEC_BOW, (m.bow || 0) + " nm"],
       ["마이크로트렌치 ≤ " + SPEC.micro + " nm", m.micro <= SPEC.micro, m.micro + " nm"],
       ["남은 마스크 ≥ " + SPEC.maskLeft + " nm", m.maskLeft >= SPEC.maskLeft, m.maskLeft.toFixed(0) + " nm"],
@@ -342,7 +342,7 @@
     const m = M[L.pick];
     EB.stat("lab-o-t", EB.fmt(t, 3));
     EB.stat("lab-o-d", m ? fmtNm(m.depth) : "—");
-    EB.stat("lab-o-a", m && m.widths.length > 4 ? m.angle.toFixed(1) + "°" : "—");
+    EB.stat("lab-o-a", m && m.angleValid !== false && m.widths.length > 4 ? m.angle.toFixed(1) + "°" : "—");
     EB.stat("lab-o-b", m ? fmtNm(m.bow || 0) : "—");
     EB.stat("lab-o-mt", m ? fmtNm(m.micro) : "—");
     EB.stat("lab-o-m", m ? (m.maskLeft > 0.5 ? fmtNm(m.maskLeft) : '<span class="bad-t">없음</span>') : "—");

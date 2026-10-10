@@ -143,9 +143,9 @@
 
   <section id="flux">
     <h2>바닥에 닿는 이온과 라디칼</h2>
-    <p>이온은 거의 직선으로 날아온다. 각도 퍼짐이 σ이면, 2차원 트렌치에서 입구의 한 점으로 들어온 각도 θ의 이온이 벽에 맞지 않고 바닥에 닿을 확률은 \(\max(0,\,1 - A\,|\tan\theta|)\)이다. 이것을 가우스 분포로 평균하면 이온의 바닥 도달률 \(f_i(A, \sigma)\)가 된다. 라디칼은 붙을 확률 \(s\)를 가지고 벽에서 튕기므로 <a href="arde.html">10장</a>의 코번-윈터스 식을 쓴다.</p>
-    <div class="formula">$$\frac{\Gamma_n^{\text{bottom}}}{\Gamma_n^{\text{top}}} = \frac{1}{1 + s\left(\dfrac{1}{K(A)} - 1\right)}, \qquad K_{\text{slot}} = \sqrt{1+A^2} - A,\quad K_{\text{hole}} \approx \frac{1}{1+\tfrac{3}{4}A}$$
-      <div class="where">\(K\)는 입구로 들어온 분자가 바닥까지 가는 투과 확률(벽에 붙지 않는다고 할 때), \(A\)는 깊이/폭이다. 붙을 확률이 작을수록 바닥까지 잘 간다. 구멍은 사방이 막혀 있어 트렌치보다 투과 확률이 작다.</div>
+    <p>이온은 거의 직선으로 날아온다. 각도 퍼짐이 σ이면, 2차원 트렌치에서 입구의 한 점으로 들어온 각도 θ의 이온이 벽에 맞지 않고 바닥에 닿을 확률은 \(\max(0,\,1 - A\,|\tan\theta|)\)이다. 이것을 가우스 분포로 평균하면 이온의 바닥 도달률 \(f_i(A, \sigma)\)가 된다. 라디칼 수송의 정밀 계산에는 <a href="arde.html">10장</a>처럼 벽 반사를 포함한 투과 확률이 필요하다. 아래는 두 모양의 면적 평균 직접 도달률 \(G\)를 같은 정의로 비교하고, 이를 코번-윈터스 식의 자리에 넣은 간단한 근사 모델이다.</p>
+    <div class="formula">$$\frac{\Gamma_n^{\text{bottom}}}{\Gamma_n^{\text{top}}} = \frac{1}{1 + s\left(\dfrac{1}{G(A)} - 1\right)}, \qquad G_{\text{slot}} = \sqrt{1+A^2} - A,\quad G_{\text{hole}} = \left(\sqrt{1+A^2} - A\right)^2$$
+      <div class="where">\(G\)는 벽에 반사되지 않고 바로 바닥에 도달하는 비율이며, \(A\)는 깊이/폭(원통은 깊이/지름)이다. 코사인 입사와 입구의 균일한 위치 분포를 가정한다. 원통의 직접 도달률은 긴 슬롯보다 작다. 이 \(G\)는 반사를 포함한 클라우징 계수 \(K\)가 아니므로 그래프의 라디칼 값은 정밀 수송 계산으로 해석하지 않는다.</div>
     </div>
     <p>그래프를 좌우로 끌어 종횡비를 옮긴다. 세로축은 로그 눈금이다.</p>
 
@@ -162,7 +162,7 @@
       <div class="sim-readout">
         <div class="stat"><span class="k">종횡비 A</span><span class="v" id="fx-o-a">—</span></div>
         <div class="stat"><span class="k">이온 도달률</span><span class="v" id="fx-o-i">—</span></div>
-        <div class="stat"><span class="k">라디칼 도달률</span><span class="v" id="fx-o-n">—</span></div>
+        <div class="stat"><span class="k">라디칼 도달률 (근사)</span><span class="v" id="fx-o-n">—</span></div>
         <div class="stat"><span class="k">바닥의 라디칼/이온 (위=1)</span><span class="v" id="fx-o-r">—</span></div>
       </div>
       <div class="sim-note">해볼 것: ① σ 3°, 트렌치에서 종횡비 8과 60의 이온 도달률을 견준다. ② σ를 1° 아래로 줄이면 이온은 깊이 들어가지만 라디칼은 그대로라 바닥의 라디칼/이온 비가 크게 떨어지는 것을 본다(중성종 부족 영역). ③ s를 0.001로 낮추면(라디칼이 잘 안 붙는 조건) 라디칼 도달률이 얼마나 회복되는지 본다. (가정: 벽에서 튕긴 이온은 바닥에 닿지 않는다고 본 하한. 실제로는 벽을 스치며 반사된 이온 일부가 바닥까지 간다. 붙을 확률은 깊이와 무관한 상수.)</div>
@@ -490,7 +490,7 @@
       }
       return f / wsum;
     }
-    const neuFrac = (A, s, hole) => ET.coburn(s, hole ? ET.clausing(A) : ET.slotView(A));
+    const neuFrac = (A, s, hole) => ET.coburn(s, hole ? ET.holeView(A) : ET.slotView(A));
     function draw(ctx, w, h) {
       const P = EB.palette(), hole = geo() === "hole", sd = sig(), s = Math.pow(10, st());
       const xs = []; for (let k = 0; k <= 80; k++) xs.push(Math.pow(10, k / 40));
@@ -505,7 +505,7 @@
       });
       ctx.font = EB.font(12); ctx.textAlign = "left";
       ctx.fillStyle = P.accent; ctx.fillText("이온", lay.box.x + 8, lay.box.y + lay.box.h - 30);
-      ctx.fillStyle = P.accent2; ctx.fillText("라디칼", lay.box.x + 8, lay.box.y + lay.box.h - 12);
+      ctx.fillStyle = P.accent2; ctx.fillText("라디칼 (근사)", lay.box.x + 8, lay.box.y + lay.box.h - 12);
       EB.stat("fx-o-a", EB.fmt(A, 3));
       EB.stat("fx-o-i", (fi * 100).toFixed(fi < 0.1 ? 1 : 0) + "<small>%</small>");
       EB.stat("fx-o-n", (fn * 100).toFixed(fn < 0.1 ? 1 : 0) + "<small>%</small>");

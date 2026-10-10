@@ -203,7 +203,7 @@
 
   <section id="eb20">
     <h2>EB-20을 처음부터 끝까지 깎는다</h2>
-    <p>이제 타깃 전체를 깎는다. 위에서부터 비정질 탄소 마스크 60 nm, 산화막 160 nm, 질화막 정지막 15 nm, 실리콘이다. 마스크에는 폭 20 nm의 홈이 열려 있고 같은 홈이 피치 40 nm로 되풀이된다. 레시피는 이 책의 기본 산화막 식각(<code>ET.EB20.recipe()</code>, C₄F₈/Ar/O₂)이다. 시간의 단위는 "열린 평면의 산화막이 1 nm 깎이는 시간"이다. 열린 평면 속도를 300 nm/분으로 잡으면 한 단위가 0.2초이고 시간 400은 80초다.</p>
+    <p>이제 타깃 전체를 깎는다. 위에서부터 비정질 탄소 마스크 60 nm, 산화막 160 nm, 질화막 정지막 15 nm, 실리콘이다. 마스크에는 폭 20 nm의 홈이 열려 있고 같은 홈이 피치 40 nm로 되풀이된다. 레시피는 이 책의 기본 산화막 식각(<code>ET.EB20.recipe()</code>, C₄F₈/Ar/O₂)이다. 시간은 기본 레시피의 이론적 열린 평면 속도(openRate)로 정규화한다. 실제 셀 제거량은 이론값과 다르다. 예시 환산에서 이론적 기준 속도를 300 nm/분으로 잡으면 한 단위가 0.2초이고 시간 400은 80초다.</p>
     <p>재생을 누르면 입자를 쏘기 시작한다. 이온 약 1000개, 라디칼과 고분자 전구체 각 약 1000개를 한 걸음으로 날리고 표면을 한 번 고친다. 이것을 700번쯤 되풀이한다. 시간 20마다 윤곽선이 등고선으로 남는다. 계산이 지나간 시간이면 언제든 시간 손잡이로 되돌아가 그 순간의 단면을 볼 수 있다.</p>
 
     <div class="sim" id="sim-eb">
@@ -643,7 +643,7 @@
       txt(ctx, "t = " + s.t.toFixed(0), b.x + 4, b.y + 14, P.text, "left", "alphabetic", 12, true);
       // 깊이-시간 그래프
       const box = { x: chA.x + 58, y: chA.y + 30, w: chA.w - 58 - 16, h: chA.h - 30 - 50 };
-      EB.chart(ctx, box, { x: [0, TEND], y: [0, 180], xLabel: "시간 (열린 평면 산화막 1 nm = 1)", yLabel: "nm",
+      EB.chart(ctx, box, { x: [0, TEND], y: [0, 180], xLabel: "시간 (이론적 평면 속도로 정규화)", yLabel: "nm",
         series: [{ data: series, color: P.accent, width: 2.2 }, { data: maskS, color: P.accent2, width: 2, dash: [6, 4] }],
         hlines: [{ y: 160, color: P.ok, label: "정지막 (깊이 160)" }, { y: 15, color: P.warn, label: "마스크 하한 15" }],
         vlines: [{ x: s.t, color: P.faint }],
